@@ -1,0 +1,7 @@
+#!/bin/bash
+
+rg --vimgrep "$@" \
+  | fzf --delimiter ':' \
+        --bind "enter:execute(
+          lvim +{2} {1}
+        )"

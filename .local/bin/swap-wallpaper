@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Define source and target directories
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+TARGET_FILE="$HOME/Pictures/wallpaper.jpg"
+
+# Ensure the directory exists
+if [[ ! -d "$WALLPAPER_DIR" ]]; then
+    echo "Wallpaper directory does not exist: $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Select a random wallpaper
+RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f | shuf -n 1)
+# RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+
+# Check if a file was found
+if [[ -z "$RANDOM_WALLPAPER" ]]; then
+    echo "No wallpapers found in $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Copy the selected file to the target location
+cp "$RANDOM_WALLPAPER" "$TARGET_FILE"
+echo "Wallpaper set to: $RANDOM_WALLPAPER"
+

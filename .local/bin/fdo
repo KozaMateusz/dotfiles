@@ -1,0 +1,4 @@
+#!/bin/bash
+
+fdfind --hidden --exclude .git "$@" \
+  | fzf --bind "enter:execute(lvim {})"

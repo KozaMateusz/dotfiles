@@ -1,0 +1,6 @@
+Xcursor.size: 24
+regolith.look.path: /usr/share/regolith-look/i3-default
+gnome.terminal.font: JetBrainsMono Nerd Font 11
+regolith.wallpaper.file: /home/mateusz/Pictures/wallpaper.jpg
+regolith.lockscreen.wallpaper.file: /home/mateusz/Pictures/wallpaper.jpg
+regolith.wallpaper.options: zoom

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+PWD=$(pwd)
+MOUNT_DIR="/home/mateusz/Desktop/remote/rednode/mkoza/workspace/"
+REMOTE_DIR="/home/mkoza/workspace/"
+
+REL_PATH="${PWD#"$MOUNT_DIR"}"
+REMOTE_PWD="${REMOTE_DIR}${REL_PATH}"
+
+if ssh mkoza@rednode "[ ! -d \"$REMOTE_PWD\" ]"; then
+    # Directory does not exist on remote
+    ssh -t mkoza@rednode "export TERM=xterm-256color; exec bash --login -i"
+elif [ $# -eq 0 ]; then
+    # No arguments: open interactive shell
+    ssh -t mkoza@rednode "export TERM=xterm-256color; cd \"$REMOTE_PWD\" && exec bash --login -i"
+else
+    # Arguments provided: run command
+    REMOTE_CMD="$*"
+    ssh -t mkoza@rednode "export TERM=xterm-256color; cd \"$REMOTE_PWD\" && $REMOTE_CMD"
+fi

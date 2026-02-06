@@ -1,0 +1,16 @@
+#!/bin/bash
+# Usage: ./set-redshift.sh 3000
+
+set -e
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <temperature>"
+    exit 1
+fi
+
+# Kill existing redshift instances
+pkill -x redshift || true
+
+# Start new redshift with given color temperature in background
+nohup redshift -P -O "$1" >/dev/null 2>&1 &
+disown

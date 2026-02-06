@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# hex2gb - Convert a hexadecimal number to gigabytes (GB)
+
+hex=${1#0x}   # Remove optional 0x prefix
+bytes=$((16#$hex))
+awk -v b="$bytes" 'BEGIN { printf "%.2f GB\n", b / (1024^3) }'
