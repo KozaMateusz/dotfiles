@@ -128,3 +128,10 @@ local capabilities = require("lvim.lsp").common_capabilities()
 capabilities.offsetEncoding = { "utf-16" }
 local opts = { capabilities = capabilities }
 require("lvim.lsp.manager").setup("clangd", opts)
+
+-- This piece makes LSPs work
+require('mason-lspconfig').setup_handlers({
+  function(server)
+    require('lvim.lsp.manager').setup(server)
+  end
+})
