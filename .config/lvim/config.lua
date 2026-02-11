@@ -1,147 +1,149 @@
 -- Editor
-lvim.colorscheme = 'onedarker'
+lvim.colorscheme       = 'onedarker'
 vim.opt.relativenumber = true
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn    = "80"
 -- Linux kernel coding style indentation
-vim.opt.expandtab     = false   -- never convert tabs to spaces
-vim.opt.shiftwidth    = 8       -- indent size
-vim.opt.tabstop       = 8       -- a hard tab is 8 columns
-vim.opt.softtabstop   = 8
-vim.opt.smartindent   = true
-vim.opt.cindent       = true
-vim.opt.cinoptions    = "L0,(0,W4"
-vim.opt.list          = true
-vim.opt.listchars     = { tab = "▸ " }
+vim.opt.expandtab      = false -- never convert tabs to spaces
+vim.opt.shiftwidth     = 8     -- indent size
+vim.opt.tabstop        = 8     -- a hard tab is 8 columns
+vim.opt.softtabstop    = 8
+vim.opt.smartindent    = true
+vim.opt.cindent        = true
+vim.opt.cinoptions     = "L0,(0,W4"
+vim.opt.list           = true
+vim.opt.listchars      = { tab = "▸ " }
 
 -- Plugins
-lvim.plugins = {
-  {
-    "github/copilot.vim",
-    init = function()
-      vim.g.copilot_no_tab_map = true
-    end,
-    config = function()
-      vim.keymap.set(
-        "i",
-        "<C-a>",
-        [[copilot#Accept("\<CR>")]],
-        {
-          silent = true,
-          expr = true,
-          script = true,
-          replace_keycodes = false,
-        }
-      )
-    end,
-  },
+lvim.plugins           = {
+	{
+		"github/copilot.vim",
+		init = function()
+			vim.g.copilot_no_tab_map = true
+		end,
+		config = function()
+			vim.keymap.set(
+				"i",
+				"<C-a>",
+				[[copilot#Accept("\<CR>")]],
+				{
+					silent = true,
+					expr = true,
+					script = true,
+					replace_keycodes = false,
+				}
+			)
+		end,
+	},
 
-  {
-    "lambdalisue/suda.vim",
-    init = function()
-      vim.g.suda_smart_edit = 1
-    end,
-  },
+	{
+		"lambdalisue/suda.vim",
+		init = function()
+			vim.g.suda_smart_edit = 1
+		end,
+	},
 
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      -- Ignore false positives from devicetree_ls about indentation
-      do
-        local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			-- Ignore false positives from devicetree_ls about indentation
+			do
+				local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
 
-        vim.lsp.handlers["textDocument/publishDiagnostics"] =
-          function(err, result, ctx, config)
-            if ctx
-              and ctx.client_id
-              and vim.lsp.get_client_by_id(ctx.client_id)
-              and vim.lsp.get_client_by_id(ctx.client_id).name == "devicetree_ls"
-              and result
-              and result.diagnostics
-            then
-              result.diagnostics = vim.tbl_filter(function(d)
-                return not d.message:match("Fix indentation")
-              end, result.diagnostics)
-            end
+				vim.lsp.handlers["textDocument/publishDiagnostics"] =
+				    function(err, result, ctx, config)
+					    if ctx
+					        and ctx.client_id
+					        and vim.lsp.get_client_by_id(ctx.client_id)
+					        and vim.lsp.get_client_by_id(ctx.client_id).name == "devicetree_ls"
+					        and result
+					        and result.diagnostics
+					    then
+						    result.diagnostics = vim.tbl_filter(function(d)
+							    return not d.message:match("Fix indentation")
+						    end, result.diagnostics)
+					    end
 
-            return orig_handler(err, result, ctx, config)
-          end
-      end
+					    return orig_handler(err, result, ctx, config)
+				    end
+			end
 
-      vim.list_extend(
-        lvim.lsp.automatic_configuration.skipped_servers,
-        { "devicetree_ls" }
-      )
+			vim.list_extend(
+				lvim.lsp.automatic_configuration.skipped_servers,
+				{ "devicetree_ls" }
+			)
 
-      local lspconfig = require("lspconfig")
-      local configs = require("lspconfig.configs")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
+			local lspconfig = require("lspconfig")
+			local configs = require("lspconfig.configs")
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      capabilities.textDocument = capabilities.textDocument or {}
-      capabilities.textDocument.semanticTokens = {
-        dynamicRegistration = false,
-        requests = {
-	  range = false,
-	  full = true,
-        },
-         tokenTypes = {
-	  "namespace", "class", "enum", "interface", "struct", "typeParameter", "type",
-	  "parameter", "variable", "property", "enumMember", "decorator", "event", "function",
-	  "method", "macro", "label", "comment", "string", "keyword", "number", "regexp", "operator",
-        },
-        tokenModifiers = {
-	  "declaration", "definition", "readonly", "static", "deprecated", "abstract",
-	  "async", "modification", "documentation", "defaultLibrary",
-        },
-        formats = {'relative'}
-      }
+			capabilities.textDocument = capabilities.textDocument or {}
+			capabilities.textDocument.semanticTokens = {
+				dynamicRegistration = false,
+				requests = {
+					range = false,
+					full = true,
+				},
+				tokenTypes = {
+					"namespace", "class", "enum", "interface", "struct", "typeParameter", "type",
+					"parameter", "variable", "property", "enumMember", "decorator", "event",
+					"function",
+					"method", "macro", "label", "comment", "string", "keyword", "number", "regexp",
+					"operator",
+				},
+				tokenModifiers = {
+					"declaration", "definition", "readonly", "static", "deprecated", "abstract",
+					"async", "modification", "documentation", "defaultLibrary",
+				},
+				formats = { 'relative' }
+			}
 
-      -- Enable formatting
-      capabilities.textDocument.formatting = {
-        dynamicRegistration = false
-      }
+			-- Enable formatting
+			capabilities.textDocument.formatting = {
+				dynamicRegistration = false
+			}
 
-      -- Enable folding range support
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
+			-- Enable folding range support
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			}
 
-      if not configs.devicetree_ls then
-        configs.devicetree_ls = {
-          default_config = {
-            cmd = { "devicetree-language-server", "--stdio" },
-            filetypes = { "dts", "dtsi" },
-            root_dir = lspconfig.util.root_pattern(".git", "Makefile", "Kconfig"),
-            capabilities = capabilities,
-            settings = {
-              cwd = "${workspaceFolder}",
-              devicetree = {
-                defaultIncludePaths = {
-			"include",
-                },
-                defaultBindingType = "DevicetreeOrg",
-		defaultDeviceOrgBindingsMetaSchema = {},
-		defaultDeviceOrgTreeBindings = {
-			"Documentation/devicetree/bindings",
-		},
-                autoChangeContext = true,
-                allowAdhocContexts = true,
-		contexts = {},
-              },
-            },
-          },
-        }
-      end
+			if not configs.devicetree_ls then
+				configs.devicetree_ls = {
+					default_config = {
+						cmd = { "devicetree-language-server", "--stdio" },
+						filetypes = { "dts", "dtsi" },
+						root_dir = lspconfig.util.root_pattern(".git", "Makefile", "Kconfig"),
+						capabilities = capabilities,
+						settings = {
+							cwd = "${workspaceFolder}",
+							devicetree = {
+								defaultIncludePaths = {
+									"include",
+								},
+								defaultBindingType = "DevicetreeOrg",
+								defaultDeviceOrgBindingsMetaSchema = {},
+								defaultDeviceOrgTreeBindings = {
+									"Documentation/devicetree/bindings",
+								},
+								autoChangeContext = true,
+								allowAdhocContexts = true,
+								contexts = {},
+							},
+						},
+					},
+				}
+			end
 
-      lspconfig.devicetree_ls.setup({
-        capabilities = capabilities,
-      })
+			lspconfig.devicetree_ls.setup({
+				capabilities = capabilities,
+			})
 
-      vim.notify(
-        "Custom devicetree_ls LSP loaded with semantic tokens & folding"
-      )
-    end,
-  },
+			vim.notify(
+				"Custom devicetree_ls LSP loaded with semantic tokens & folding"
+			)
+		end,
+	},
 }
 
 -- Fix multiple offset_encoding not supported yet
@@ -153,7 +155,7 @@ require("lvim.lsp.manager").setup("clangd", opts)
 
 -- This piece makes LSPs work
 require('mason-lspconfig').setup_handlers({
-  function(server)
-    require('lvim.lsp.manager').setup(server)
-  end
+	function(server)
+		require('lvim.lsp.manager').setup(server)
+	end
 })
