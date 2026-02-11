@@ -45,6 +45,28 @@ lvim.plugins = {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- Ignore false positives from devicetree_ls about indentation
+      do
+        local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+
+        vim.lsp.handlers["textDocument/publishDiagnostics"] =
+          function(err, result, ctx, config)
+            if ctx
+              and ctx.client_id
+              and vim.lsp.get_client_by_id(ctx.client_id)
+              and vim.lsp.get_client_by_id(ctx.client_id).name == "devicetree_ls"
+              and result
+              and result.diagnostics
+            then
+              result.diagnostics = vim.tbl_filter(function(d)
+                return not d.message:match("Fix indentation")
+              end, result.diagnostics)
+            end
+
+            return orig_handler(err, result, ctx, config)
+          end
+      end
+
       vim.list_extend(
         lvim.lsp.automatic_configuration.skipped_servers,
         { "devicetree_ls" }
