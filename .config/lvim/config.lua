@@ -76,6 +76,9 @@ lvim.plugins           = {
 			local configs = require("lspconfig.configs")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+			lspconfig.clangd.setup({
+				cmd = { "clangd", "--offset-encoding=utf-16" },
+			})
 			capabilities.textDocument = capabilities.textDocument or {}
 			capabilities.textDocument.semanticTokens = {
 				dynamicRegistration = false,
@@ -145,13 +148,6 @@ lvim.plugins           = {
 		end,
 	},
 }
-
--- Fix multiple offset_encoding not supported yet
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
-local capabilities = require("lvim.lsp").common_capabilities()
-capabilities.offsetEncoding = { "utf-16" }
-local opts = { capabilities = capabilities }
-require("lvim.lsp.manager").setup("clangd", opts)
 
 -- This piece makes LSPs work
 require('mason-lspconfig').setup_handlers({
