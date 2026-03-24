@@ -1,4 +1,4 @@
 #!/bin/bash
 
-fdfind --hidden --exclude .git "$@" \
+fd --hidden --exclude .git "$@" \
   | fzf --bind "enter:execute(nvim {})"
