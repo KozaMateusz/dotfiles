@@ -26,10 +26,6 @@ alias c=clear
 alias ls="eza -h --group-directories-first --icons=auto"
 alias pb="wl-copy"
 
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	command yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+for zsh_function_file in "$HOME/.config/zsh/functions"/*.zsh(.N); do
+	source "$zsh_function_file"
+done

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-fd --hidden --exclude .git "$@" \
-  | fzf --bind "enter:execute(nvim {})"
