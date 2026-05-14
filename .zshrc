@@ -12,6 +12,11 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# this fixes a bug where omarchy defines functions that conflict with
+# pre-existing aliases.
+unalias ga
+unalias gd
+
 # from Omarchy
 [[ $- != *i* ]] && return
 [[ -f /usr/share/omarchy-zsh/shell/zoptions ]] && source /usr/share/omarchy-zsh/shell/zoptions
