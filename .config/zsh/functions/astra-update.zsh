@@ -37,4 +37,6 @@ function astra-update() {
 			return 2
 			;;
 	esac
+  
+  cd -
 }
