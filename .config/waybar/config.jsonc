@@ -175,15 +175,4 @@
     "icon-size": 12,
     "spacing": 17
   },
-  "custom/capslock": {
-    "interval": 0.1,
-    "exec": "bash -c 'v=$(cat /sys/class/leds/input*::capslock/brightness | head -n1); echo \"{\\\"text\\\":\\\"$v\\\",\\\"alt\\\":\\\"$v\\\"}\"'",
-    "return-type": "json",
-    "format": "{icon}",
-    "format-icons": {
-      "0": "□  ",
-      "1": "■  "
-    },
-    "tooltip": false
-  }
 }
