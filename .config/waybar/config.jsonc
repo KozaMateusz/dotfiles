@@ -17,6 +17,8 @@
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
+    "all-outputs": false,
+    "sort-by": "number",
     "format": "{icon}",
     "format-icons": {
       "default": "",
@@ -31,13 +33,6 @@
       "9": "9",
       "10": "0",
       "active": "󱓻"
-    },
-    "persistent-workspaces": {
-      "1": [],
-      "2": [],
-      "3": [],
-      "4": [],
-      "5": []
     }
   },
   "custom/omarchy": {
