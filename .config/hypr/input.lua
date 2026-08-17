@@ -7,6 +7,9 @@
 hl.config({
   input = {
     kb_options = "",
+    touchpad = {
+      natural_scroll = true,
+    },
   },
 })
 
