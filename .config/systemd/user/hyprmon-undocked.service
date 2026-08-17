@@ -1,0 +1,11 @@
+[Unit]
+Description=Apply hyprmon undocked profile at session start
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hyprmon --profile undocked
+
+[Install]
+WantedBy=graphical-session.target
