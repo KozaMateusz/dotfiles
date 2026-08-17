@@ -3,6 +3,13 @@
 
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
+-- Restore Caps Lock as a normal lock key rather than using it as Compose.
+hl.config({
+  input = {
+    kb_options = "",
+  },
+})
+
 -- hl.config({
 --   input = {
 --     -- Use multiple keyboard layouts and switch between them with Left Alt + Right Alt.
