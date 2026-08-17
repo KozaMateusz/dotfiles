@@ -6,6 +6,7 @@
 -- Restore Caps Lock as a normal lock key rather than using it as Compose.
 hl.config({
   input = {
+    kb_layout = "pl",
     kb_options = "",
     touchpad = {
       natural_scroll = true,
