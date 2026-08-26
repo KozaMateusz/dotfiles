@@ -27,6 +27,12 @@
 hl.unbind("SUPER + F")
 o.bind("SUPER + F", "Full screen", hl.dsp.window.fullscreen_state({ internal = 2, client = 0, action = "toggle" }))
 
+-- Move the current workspace to an adjacent monitor.
+o.bind("SUPER + SHIFT + CTRL + LEFT", "Move workspace to left monitor", hl.dsp.workspace.move({ monitor = "l" }))
+o.bind("SUPER + SHIFT + CTRL + RIGHT", "Move workspace to right monitor", hl.dsp.workspace.move({ monitor = "r" }))
+o.bind("SUPER + SHIFT + CTRL + UP", "Move workspace to up monitor", hl.dsp.workspace.move({ monitor = "u" }))
+o.bind("SUPER + SHIFT + CTRL + DOWN", "Move workspace to down monitor", hl.dsp.workspace.move({ monitor = "d" }))
+
 -- Logitech MX Keys examples:
 -- o.bind("SUPER + SHIFT + S", nil, "omarchy-capture-screenshot")
 -- o.bind("SUPER + H", nil, "voxtype record toggle")
