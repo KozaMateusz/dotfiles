@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Hyprland
 import qs.Commons
 import qs.Ui
@@ -17,21 +18,15 @@ BarWidget {
     return null
   }
 
-  function barMonitorName() {
-    if (!root.bar || !root.bar.moduleSlots || !root.bar.slotScreenName) return ""
-
-    for (var i = 0; i < root.bar.moduleSlots.length; i++) {
-      var slot = root.bar.moduleSlots[i]
-      if (slot && slot.activeItem === root) return root.bar.slotScreenName(slot)
-    }
-
-    return ""
-  }
+  readonly property var barWindow: root.QsWindow.window
+  readonly property string barMonitorName: barWindow && barWindow.screen
+    ? String(barWindow.screen.name || "")
+    : ""
 
   function workspaceIds() {
     var ids = []
     var values = Hyprland.workspaces.values
-    var monitorName = root.barMonitorName()
+    var monitorName = root.barMonitorName
 
     for (var i = 0; i < values.length; i++) {
       var workspace = values[i]
